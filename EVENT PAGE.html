@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NEXUS 2025 — Annual Tech Fest | Silver Oak University</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+:root{
+  --neon:#00ffe7; --hot:#ff2d78; --amber:#ffb400;
+  --violet:#7c3aed; --dark:#060610; --card:#0d0d20;
+  --border:rgba(0,255,231,0.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--dark);color:#e2e8f0;overflow-x:hidden;}
+h1,h2,.display{font-family:'Bebas Neue',sans-serif;letter-spacing:.04em;}
+.mono{font-family:'JetBrains Mono',monospace;}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--dark);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--neon),var(--hot));border-radius:99px;}
+
+/* grid bg */
+.grid-bg{
+  background-image:
+    linear-gradient(rgba(0,255,231,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,231,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+
+/* noise */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  opacity:.4;
+}
+
+/* blobs */
+.blob{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;backdrop-filter:blur(20px);
+  background:rgba(6,6,16,.85);border-bottom:1px solid var(--border);}
+.nav-link{color:#94a3b8;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:600;transition:color .3s;position:relative;}
+.nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+  background:var(--neon);transition:width .3s;}
+.nav-link:hover{color:var(--neon);}
+.nav-link:hover::after{width:100%;}
+
+/* ── HERO ── */
+.hero-title{
+  font-size:clamp(5rem,18vw,16rem);line-height:.9;
+  background:linear-gradient(135deg,#fff 0%,var(--neon) 50%,var(--hot) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 40px rgba(0,255,231,.25));
+}
+.glitch{position:relative;animation:gShift 5s infinite;}
+.glitch::before,.glitch::after{
+  content:attr(data-text);position:absolute;top:0;left:0;
+  background:inherit;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.glitch::before{animation:g1 4s infinite;clip-path:polygon(0 0,100% 0,100% 35%,0 35%);}
+.glitch::after {animation:g2 4s infinite;clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);}
+@keyframes g1{0%,94%,100%{transform:none;}95%{transform:translate(-3px) skewX(2deg);}97%{transform:translate(3px) skewX(-2deg);}}
+@keyframes g2{0%,94%,100%{transform:none;}95%{transform:translate(3px) skewX(-2deg);}97%{transform:translate(-3px) skewX(2deg);}}
+@keyframes gShift{0%,91%,100%{filter:none;}92%{filter:hue-rotate(30deg) saturate(2);}95%{filter:hue-rotate(-20deg);}}
+
+/* text colors */
+.neon-text{color:var(--neon);text-shadow:0 0 20px rgba(0,255,231,.6);}
+.hot-text {color:var(--hot); text-shadow:0 0 20px rgba(255,45,120,.6);}
+.amber-text{color:var(--amber);text-shadow:0 0 20px rgba(255,180,0,.5);}
+.grad-text{
+  background:linear-gradient(135deg,var(--neon),var(--hot));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* badge */
+.badge{display:inline-block;padding:5px 16px;border:1px solid rgba(0,255,231,.3);
+  border-radius:2px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--neon);font-family:'JetBrains Mono',monospace;}
+
+/* countdown */
+.cd-box{
+  background:rgba(0,255,231,.05);border:1px solid rgba(0,255,231,.25);
+  border-radius:12px;padding:18px 24px;text-align:center;position:relative;overflow:hidden;
+}
+.cd-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--neon),transparent);
+  animation:scan 2s ease-in-out infinite;}
+@keyframes scan{0%,100%{opacity:0;}50%{opacity:1;}}
+.cd-num{font-family:'JetBrains Mono',monospace;font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:700;color:var(--neon);text-shadow:0 0 30px rgba(0,255,231,.7);line-height:1;}
+
+/* buttons */
+.btn-neon{
+  display:inline-flex;align-items:center;gap:8px;background:transparent;
+  border:1.5px solid var(--neon);color:var(--neon);padding:14px 32px;
+  border-radius:4px;font-weight:700;font-size:.88rem;letter-spacing:.08em;
+  text-transform:uppercase;transition:all .3s;position:relative;overflow:hidden;cursor:pointer;
+  font-family:'Outfit',sans-serif;
+}
+.btn-neon::before{content:'';position:absolute;inset:0;background:var(--neon);
+  transform:translateX(-100%);transition:transform .3s ease;z-index:0;}
+.btn-neon span,.btn-neon i{position:relative;z-index:1;}
+.btn-neon:hover::before{transform:translateX(0);}
+.btn-neon:hover{color:var(--dark);box-shadow:0 0 30px rgba(0,255,231,.4);}
+
+.btn-hot{
+  display:inline-flex;align-items:center;gap:8px;background:var(--hot);
+  color:#fff;padding:14px 32px;border-radius:4px;font-weight:700;
+  font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;
+  transition:all .3s;box-shadow:0 0 25px rgba(255,45,120,.4);cursor:pointer;
+  font-family:'Outfit',sans-serif;border:none;
+}
+.btn-hot:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(255,45,120,.6);}
+
+.btn-amber{
+  display:inline-flex;align-items:center;gap:8px;background:var(--amber);
+  color:var(--dark);padding:14px 32px;border-radius:4px;font-weight:800;
+  font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;
+  transition:all .3s;box-shadow:0 0 25px rgba(255,180,0,.3);cursor:pointer;
+  font-family:'Outfit',sans-serif;border:none;
+}
+.btn-amber:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(255,180,0,.5);}
+
+/* cards */
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  transition:all .4s ease;position:relative;overflow:hidden;
+}
+.card::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,255,231,.04),rgba(255,45,120,.04));
+  opacity:0;transition:opacity .4s;pointer-events:none;}
+.card:hover::after{opacity:1;}
+.card:hover{border-color:rgba(0,255,231,.4);transform:translateY(-6px);
+  box-shadow:0 20px 50px rgba(0,255,231,.1);}
+
+/* event card — clickable */
+.event-card{cursor:pointer;}
+.event-card:hover .ec-arrow{transform:translateX(4px);}
+.ec-arrow{transition:transform .3s;}
+
+/* schedule timeline */
+.t-line{position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--neon),var(--hot),transparent);}
+.t-dot{width:12px;height:12px;border-radius:50%;background:var(--neon);
+  box-shadow:0 0 14px var(--neon);flex-shrink:0;margin-top:6px;}
+
+/* speaker card */
+.sp-card{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;transition:all .4s;cursor:pointer;}
+.sp-card:hover{border-color:rgba(255,45,120,.5);transform:translateY(-8px) scale(1.02);
+  box-shadow:0 20px 50px rgba(255,45,120,.15);}
+
+/* highlight card */
+.hl-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:28px 22px;text-align:center;transition:all .4s;position:relative;
+  overflow:hidden;cursor:pointer;}
+.hl-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--neon),var(--hot));
+  transform:scaleX(0);transition:transform .4s;transform-origin:left;}
+.hl-card:hover::before{transform:scaleX(1);}
+.hl-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,255,231,.1);}
+
+/* form input */
+.form-input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(0,255,231,.2);
+  border-radius:6px;padding:12px 16px;color:#e2e8f0;font-family:'Outfit',sans-serif;
+  transition:border-color .3s,box-shadow .3s;font-size:.9rem;}
+.form-input:focus{outline:none;border-color:var(--neon);box-shadow:0 0 0 3px rgba(0,255,231,.1);}
+.form-input option{background:#0d0d20;}
+
+/* FAQ */
+.faq-item{border-bottom:1px solid rgba(255,255,255,.07);}
+.faq-ans{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;}
+.faq-ans.open{max-height:300px;padding-bottom:16px;}
+.faq-ico{transition:transform .3s;}
+.faq-ico.open{transform:rotate(45deg);}
+
+/* fade animations */
+.fade-up{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+.fade-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease;}
+.fade-left.visible{opacity:1;transform:translateX(0);}
+
+/* float */
+.float{animation:floatY 4s ease-in-out infinite;}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+
+/* ticker */
+.ticker-wrap{overflow:hidden;background:var(--neon);}
+.ticker-track{display:flex;gap:70px;white-space:nowrap;animation:tick 22s linear infinite;}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* sponsor scroll */
+.sp-track{display:flex;gap:48px;animation:spScroll 18s linear infinite;}
+@keyframes spScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* stat */
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,5rem);
+  background:linear-gradient(135deg,var(--neon),var(--hot));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* day tab */
+.day-tab{padding:10px 26px;border:1px solid rgba(0,255,231,.2);border-radius:4px;
+  color:#64748b;font-weight:700;font-size:1.05rem;transition:all .3s;
+  background:transparent;cursor:pointer;font-family:'Outfit',sans-serif;}
+.day-tab.active{background:var(--neon);color:var(--dark);border-color:var(--neon);
+  box-shadow:0 0 28px rgba(0,255,231,.3);}
+.day-tab:hover:not(.active){border-color:var(--neon);color:var(--neon);}
+
+/* filter btn */
+.filter-btn{padding:7px 20px;border-radius:99px;font-size:.8rem;font-weight:600;
+  border:1px solid rgba(255,255,255,.1);color:#64748b;transition:all .3s;
+  cursor:pointer;background:transparent;font-family:'Outfit',sans-serif;}
+.filter-btn.active-f{background:var(--neon);color:var(--dark);border-color:var(--neon);}
+.filter-btn:hover:not(.active-f){border-color:rgba(0,255,231,.4);color:var(--neon);}
+
+/* mobile nav */
+#mob-nav{display:none;}
+#mob-nav.open{display:flex;flex-direction:column;
+  background:rgba(6,6,16,.98);border-top:1px solid var(--border);padding:20px 24px;gap:18px;}
+
+/* ══════════════════════════════════
+   MODAL OVERLAYS
+══════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.85);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .35s ease;
+}
+.modal-overlay.show{opacity:1;pointer-events:all;}
+.modal-box{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  width:100%;max-width:640px;max-height:90vh;overflow-y:auto;
+  transform:translateY(30px) scale(.97);transition:transform .35s ease;
+  position:relative;
+}
+.modal-overlay.show .modal-box{transform:translateY(0) scale(1);}
+
+/* wide modal for schedule */
+.modal-box.wide{max-width:860px;}
+
+/* close btn */
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  color:#94a3b8;font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s;z-index:10;
+}
+.modal-close:hover{background:rgba(255,45,120,.2);color:var(--hot);border-color:var(--hot);}
+
+/* event detail modal top strip */
+.modal-strip{height:6px;border-radius:16px 16px 0 0;}
+
+/* scrollbar inside modal */
+.modal-box::-webkit-scrollbar{width:4px;}
+.modal-box::-webkit-scrollbar-thumb{background:var(--neon);border-radius:99px;}
+
+/* register steps */
+.step-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;}
+
+/* success animation */
+@keyframes popIn{0%{transform:scale(0);}60%{transform:scale(1.15);}100%{transform:scale(1);}}
+.pop-in{animation:popIn .5s ease forwards;}
+
+/* SOC logo ring */
+.sou-ring{
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,#0c4a6e,#1e40af);
+  border:2px solid rgba(0,255,231,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--neon);
+  box-shadow:0 0 20px rgba(0,255,231,.2);flex-shrink:0;
+}
+</style>
+</head>
+<body class="grid-bg">
+
+<!-- ═══════════════════════════════════════
+  REGISTER MODAL
+═══════════════════════════════════════ -->
+<div id="reg-modal" class="modal-overlay" onclick="closeModal('reg-modal',event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('reg-modal')"><i class="fas fa-times"></i></button>
+    <div class="modal-strip" style="background:linear-gradient(90deg,var(--neon),var(--hot))"></div>
+
+    <!-- Step 1 — form -->
+    <div id="reg-step1" class="p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="sou-ring">SOU</div>
+        <div>
+          <h3 class="text-white font-bold text-2xl display tracking-wide">Register for NEXUS 2025</h3>
+          <p class="text-slate-400 text-sm">Silver Oak University · Ahmedabad</p>
+        </div>
+      </div>
+
+      <!-- free badge -->
+      <div class="flex items-center gap-3 bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-4 mb-6">
+        <i class="fas fa-gift text-emerald-400 text-xl"></i>
+        <div>
+          <p class="text-emerald-300 font-bold">🎉 Registration is FREE for SOU Students!</p>
+          <p class="text-slate-400 text-xs mt-0.5">External participants: ₹199 only. All passes include Night Concerts + Certificates.</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-slate-400 text-xs mb-1.5 block mono">FULL NAME *</label>
+            <input id="r-name" type="text" class="form-input" placeholder="Diya Patel"/>
+          </div>
+          <div>
+            <label class="text-slate-400 text-xs mb-1.5 block mono">PHONE *</label>
+            <input id="r-phone" type="tel" class="form-input" placeholder="+91 98765 43210"/>
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 text-xs mb-1.5 block mono">EMAIL ADDRESS *</label>
+          <input id="r-email" type="email" class="form-input" placeholder="diya@silveroakuni.ac.in"/>
+        </div>
+        <div>
+          <label class="text-slate-400 text-xs mb-1.5 block mono">COLLEGE / INSTITUTION *</label>
+          <input id="r-college" type="text" class="form-input" placeholder="Silver Oak University" value="Silver Oak University"/>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-slate-400 text-xs mb-1.5 block mono">YEAR *</label>
+            <select id="r-year" class="form-input">
+              <option value="">Select Year</option>
+              <option>1st Year</option><option>2nd Year</option>
+              <option>3rd Year</option><option>4th Year</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-slate-400 text-xs mb-1.5 block mono">BRANCH *</label>
+            <select id="r-branch" class="form-input">
+              <option value="">Select Branch</option>
+              <option>Information Technology</option>
+              <option>Computer Science</option>
+              <option>Electronics & Communication</option>
+              <option>Mechanical Engineering</option>
+              <option>Civil Engineering</option>
+              <option>MBA / Management</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 text-xs mb-2 block mono">EVENTS YOU WANT TO JOIN</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center gap-2 text-slate-300 text-sm cursor-pointer"><input type="checkbox" style="accent-color:var(--neon)"/> 💻 Hackathon</label>
+            <label class="flex items-center gap-2 text-slate-300 text-sm cursor-pointer"><input type="checkbox" style="accent-color:var(--neon)"/> 🤖 Robo Wars</label>
+            <label class="flex items-center gap-2 text-slate-300 text-sm cursor-pointer"><input type="checkbox" style="accent-color:var(--neon)"/> 🚀 Startup Pitch</label>
+            <label class="flex items-center gap-2 text-slate-300 text-sm cursor-pointer"><input type="checkbox" style="accent-color:var(--neon)"/> 🎮 Esports (BGMI)</label>
+            <label class="flex items-center gap-2 text-slate-300 text-sm cursor-pointer"><input type="checkbox" style="accent-color:var(--neon)"/> 💃 Dance Battle</label>
+            <label class="flex items-center gap-2 text-slate-300 text-sm cursor-pointer"><input type="checkbox" style="accent-color:var(--neon)"/> 🔐 CTF Hacking</label>
+            <label class="flex items-center gap-2 text-slate-300 text-sm cursor-pointer"><input type="checkbox" style="accent-color:var(--neon)"/> ☁️ Cloud Workshop</label>
+            <label class="flex items-center gap-2 text-slate-300 text-sm cursor-pointer"><input type="checkbox" style="accent-color:var(--neon)"/> 🎵 Music Night</label>
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 text-xs mb-1.5 block mono">PARTICIPANT TYPE *</label>
+          <select id="r-type" class="form-input">
+            <option value="sou">SOU Student (FREE)</option>
+            <option value="ext">External Participant (₹199)</option>
+          </select>
+        </div>
+        <button onclick="submitReg()" class="btn-hot w-full justify-center mt-2">
+          <i class="fas fa-bolt"></i><span>Complete Registration — FREE</span>
+        </button>
+        <p class="text-slate-600 text-xs text-center">Confirmation email will be sent. By registering you agree to our event code of conduct.</p>
+      </div>
+    </div>
+
+    <!-- Step 2 — success -->
+    <div id="reg-step2" class="hidden p-10 text-center">
+      <div class="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto mb-6 pop-in">
+        <i class="fas fa-check text-emerald-400 text-3xl"></i>
+      </div>
+      <h3 class="display text-4xl text-white mb-3">YOU'RE IN! 🎉</h3>
+      <p class="text-slate-400 mb-2">Registration successful for <strong class="text-white" id="conf-name">Diya Patel</strong></p>
+      <p class="text-slate-400 mb-6">A confirmation email has been sent to <strong class="text-neon" id="conf-email" style="color:var(--neon)">your email</strong></p>
+      <div class="bg-dark/50 border border-white/10 rounded-xl p-5 mb-6 text-left space-y-2">
+        <div class="flex gap-2 text-sm"><i class="fas fa-calendar text-neon" style="color:var(--neon)"></i><span class="text-slate-300">March 14–16, 2025 · Silver Oak University, Ahmedabad</span></div>
+        <div class="flex gap-2 text-sm"><i class="fas fa-id-card text-hot" style="color:var(--hot)"></i><span class="text-slate-300">Bring your College ID & this confirmation on Day 1</span></div>
+        <div class="flex gap-2 text-sm"><i class="fas fa-clock text-amber" style="color:var(--amber)"></i><span class="text-slate-300">Reporting time: 8:00 AM at Main Gate</span></div>
+      </div>
+      <button onclick="closeModal('reg-modal')" class="btn-neon"><span>Close</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SCHEDULE MODAL
+═══════════════════════════════════════ -->
+<div id="sched-modal" class="modal-overlay" onclick="closeModal('sched-modal',event)">
+  <div class="modal-box wide" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('sched-modal')"><i class="fas fa-times"></i></button>
+    <div class="modal-strip" style="background:linear-gradient(90deg,var(--hot),var(--amber))"></div>
+    <div class="p-8">
+      <div class="mb-6">
+        <span class="badge mb-3 block w-fit">3-Day Programme</span>
+        <h3 class="display text-4xl md:text-5xl text-white">NEXUS 2025 <span class="hot-text">SCHEDULE</span></h3>
+        <p class="text-slate-400 mt-2 text-sm">Silver Oak University · Ahmedabad · March 14–16, 2025</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-3 mb-8 flex-wrap">
+        <button class="day-tab active" data-d="s1" onclick="switchSchDay('s1',this)"><span class="mono text-xs block mb-1">DAY 01</span>Mar 14</button>
+        <button class="day-tab" data-d="s2" onclick="switchSchDay('s2',this)"><span class="mono text-xs block mb-1">DAY 02</span>Mar 15</button>
+        <button class="day-tab" data-d="s3" onclick="switchSchDay('s3',this)"><span class="mono text-xs block mb-1">DAY 03</span>Mar 16</button>
+      </div>
+
+      <!-- Day 1 -->
+      <div id="s1" class="sch-day relative pl-8 space-y-6">
+        <div class="t-line"></div>
+        <div class="flex gap-4"><div class="t-dot"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--neon)">08:00 – 10:00 AM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon);border:1px solid rgba(0,255,231,.3)">Inauguration</span></div><h4 class="text-white font-bold mb-1">Grand Opening Ceremony</h4><p class="text-slate-400 text-sm">Welcome by Vice Chancellor, ribbon cutting, theme reveal, drone light show & cultural performance.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Main Auditorium — Silver Oak University</p></div></div>
+        <div class="flex gap-4"><div class="t-dot" style="background:var(--hot);box-shadow:0 0 12px var(--hot)"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--hot)">10:30 AM – 12:00 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(255,45,120,.1);color:var(--hot);border:1px solid rgba(255,45,120,.3)">Keynote</span></div><h4 class="text-white font-bold mb-1">AI & The Future of Engineering</h4><p class="text-slate-400 text-sm">Opening keynote by Senior Engineer from Google India — GenAI, LLMs, career opportunities in tech.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Silver Oak Seminar Hall A</p></div></div>
+        <div class="flex gap-4"><div class="t-dot" style="background:var(--amber);box-shadow:0 0 12px var(--amber)"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--amber)">02:00 – 08:00 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(255,180,0,.1);color:var(--amber);border:1px solid rgba(255,180,0,.3)">Competition</span></div><h4 class="text-white font-bold mb-1">🚀 Hackathon Kickoff + Robo Wars Qualifiers</h4><p class="text-slate-400 text-sm">36-hour hackathon begins! Problem statements released. Robo Wars qualifier rounds also start in parallel. Cloud credits & mentors on site.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Innovation Lab + Sports Arena · SOU Campus</p></div></div>
+        <div class="flex gap-4"><div class="t-dot"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--neon)">08:30 – 11:30 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon);border:1px solid rgba(0,255,231,.3)">Cultural Night</span></div><h4 class="text-white font-bold mb-1">🎵 Night 1 — Live Band Concert</h4><p class="text-slate-400 text-sm">Live indie bands, laser light show, dance flash mobs & late-night food stalls. Free for all registered participants.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Open Air Stage · Silver Oak Grounds</p></div></div>
+      </div>
+
+      <!-- Day 2 -->
+      <div id="s2" class="sch-day hidden relative pl-8 space-y-6">
+        <div class="t-line"></div>
+        <div class="flex gap-4"><div class="t-dot"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--neon)">09:00 AM – 12:00 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon);border:1px solid rgba(0,255,231,.3)">Workshop</span></div><h4 class="text-white font-bold mb-1">☁️ Cloud & DevOps Masterclass</h4><p class="text-slate-400 text-sm">Hands-on with AWS & Azure engineers. CI/CD, Docker, Kubernetes. Completion certificates by Silver Oak University.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Computer Lab Block — SOU</p></div></div>
+        <div class="flex gap-4"><div class="t-dot" style="background:var(--hot);box-shadow:0 0 12px var(--hot)"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--hot)">10:00 AM – 06:00 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(255,45,120,.1);color:var(--hot);border:1px solid rgba(255,45,120,.3)">Battle</span></div><h4 class="text-white font-bold mb-1">🤖 Robo Wars Championship — Semis & Finals</h4><p class="text-slate-400 text-sm">Semi-final and final battles of Robo Wars. The arena gets packed. Crowd roars. Last bot standing wins ₹40,000.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Indoor Sports Complex · SOU</p></div></div>
+        <div class="flex gap-4"><div class="t-dot" style="background:var(--amber);box-shadow:0 0 12px var(--amber)"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--amber)">02:00 – 05:00 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(255,180,0,.1);color:var(--amber);border:1px solid rgba(255,180,0,.3)">Summit</span></div><h4 class="text-white font-bold mb-1">🚀 Startup Pitch Battle</h4><p class="text-slate-400 text-sm">10 selected startups pitch live to VCs and angel investors. Mentorship, funding, and incubation support at stake.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Silver Oak Conference Hall</p></div></div>
+        <div class="flex gap-4"><div class="t-dot"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--neon)">09:00 PM – 12:00 AM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon);border:1px solid rgba(0,255,231,.3)">Cultural Night</span></div><h4 class="text-white font-bold mb-1">🎶 Night 2 — DJ Night & Dance Battle</h4><p class="text-slate-400 text-sm">Headliner DJ set, inter-college dance battle finals, open mic, midnight snacks. The biggest night of NEXUS 2025!</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Open Air Stage · Silver Oak Grounds</p></div></div>
+      </div>
+
+      <!-- Day 3 -->
+      <div id="s3" class="sch-day hidden relative pl-8 space-y-6">
+        <div class="t-line"></div>
+        <div class="flex gap-4"><div class="t-dot"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--neon)">09:00 AM – 12:00 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon);border:1px solid rgba(0,255,231,.3)">Finals</span></div><h4 class="text-white font-bold mb-1">💻 Hackathon Final Presentations</h4><p class="text-slate-400 text-sm">Top 10 teams present live to judges from Google, Amazon & ISRO. Demo day, Q&A, audience vote. Results live on big screen.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Main Auditorium · SOU</p></div></div>
+        <div class="flex gap-4"><div class="t-dot" style="background:var(--hot);box-shadow:0 0 12px var(--hot)"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--hot)">01:00 – 04:00 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(255,45,120,.1);color:var(--hot);border:1px solid rgba(255,45,120,.3)">Esports</span></div><h4 class="text-white font-bold mb-1">🎮 Esports Grand Finals — BGMI & Valorant</h4><p class="text-slate-400 text-sm">Championship finals streamed live on big screens. Audience cheering, commentary, and surprise celebrity appearances.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Esports Zone · SOU Campus</p></div></div>
+        <div class="flex gap-4"><div class="t-dot" style="background:var(--amber);box-shadow:0 0 12px var(--amber)"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--amber)">05:00 – 07:00 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(255,180,0,.1);color:var(--amber);border:1px solid rgba(255,180,0,.3)">Ceremony</span></div><h4 class="text-white font-bold mb-1">🏆 Grand Prize Distribution Ceremony</h4><p class="text-slate-400 text-sm">Winners announced. Trophies, medals & certificates. Chief Guest from Industry. Vice Chancellor's closing address.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Main Auditorium · SOU</p></div></div>
+        <div class="flex gap-4"><div class="t-dot"></div><div class="card flex-1 p-5"><div class="flex flex-wrap justify-between gap-2 mb-2"><span class="mono text-xs" style="color:var(--neon)">08:00 – 11:00 PM</span><span class="text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon);border:1px solid rgba(0,255,231,.3)">Closing</span></div><h4 class="text-white font-bold mb-1">🎆 Night 3 — Closing Gala & Fireworks</h4><p class="text-slate-400 text-sm">Farewell night with celebrity performance, fireworks, memory slideshow, and the official closing of NEXUS 2025.</p><p class="text-slate-500 text-xs mt-2"><i class="fas fa-map-marker-alt mr-1"></i>Open Air Stage · Silver Oak Grounds</p></div></div>
+      </div>
+
+      <div class="mt-8 flex gap-3 flex-wrap">
+        <button onclick="openModal('reg-modal')" class="btn-hot"><i class="fas fa-bolt"></i><span>Register Free Now</span></button>
+        <button onclick="closeModal('sched-modal')" class="btn-neon"><span>Close Schedule</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  EVENT DETAIL MODAL (dynamic)
+═══════════════════════════════════════ -->
+<div id="ev-modal" class="modal-overlay" onclick="closeModal('ev-modal',event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('ev-modal')"><i class="fas fa-times"></i></button>
+    <div id="ev-modal-strip" class="modal-strip"></div>
+    <div class="p-8">
+      <div class="text-5xl mb-4" id="ev-icon">💻</div>
+      <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+        <div>
+          <h3 class="display text-4xl text-white" id="ev-title">Event Title</h3>
+          <p class="text-sm mt-1" id="ev-cat-badge"></p>
+        </div>
+        <div class="text-right">
+          <p class="font-black text-2xl" id="ev-prize" style="color:var(--amber)"></p>
+          <p class="text-slate-500 text-xs" id="ev-team"></p>
+        </div>
+      </div>
+      <p class="text-slate-300 leading-relaxed mb-6" id="ev-desc"></p>
+      <div class="grid grid-cols-2 gap-4 mb-6" id="ev-details-grid"></div>
+      <div class="bg-white/3 border border-white/8 rounded-xl p-5 mb-6">
+        <h4 class="text-white font-bold mb-3 text-sm mono tracking-widest">RULES & ELIGIBILITY</h4>
+        <ul class="space-y-2 text-sm text-slate-400" id="ev-rules"></ul>
+      </div>
+      <div class="flex gap-3 flex-wrap">
+        <button onclick="openModal('reg-modal')" class="btn-hot"><i class="fas fa-bolt"></i><span>Register for this Event</span></button>
+        <button onclick="closeModal('ev-modal')" class="btn-neon"><span>Close</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SPEAKER MODAL (dynamic)
+═══════════════════════════════════════ -->
+<div id="sp-modal" class="modal-overlay" onclick="closeModal('sp-modal',event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('sp-modal')"><i class="fas fa-times"></i></button>
+    <div class="modal-strip" style="background:linear-gradient(90deg,var(--violet),var(--hot))"></div>
+    <div class="p-8 text-center">
+      <div class="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-black" id="sp-avatar" style="font-family:'Bebas Neue',sans-serif;"></div>
+      <h3 class="display text-3xl text-white mb-1" id="sp-name"></h3>
+      <p class="font-semibold mb-1" id="sp-role"></p>
+      <p class="text-slate-500 text-sm mb-6" id="sp-org"></p>
+      <p class="text-slate-300 leading-relaxed mb-6 text-left" id="sp-bio"></p>
+      <div class="grid grid-cols-2 gap-4 mb-6" id="sp-stats"></div>
+      <p class="text-slate-400 text-sm font-semibold mb-3" id="sp-topic-label"></p>
+      <div class="bg-white/3 border border-white/8 rounded-xl p-4 mb-6" id="sp-topic-box"></div>
+      <div class="flex justify-center gap-4" id="sp-social"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  NAVBAR
+═══════════════════════════════════════ -->
+<nav>
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-3">
+      <div class="sou-ring" style="width:40px;height:40px;font-size:.85rem;">SOU</div>
+      <div>
+        <span class="display text-white text-xl tracking-widest">NEXUS<span class="neon-text">25</span></span>
+        <span class="text-slate-600 text-xs block leading-none">Silver Oak University</span>
+      </div>
+    </a>
+    <div class="hidden md:flex items-center gap-7">
+      <a href="#about"    class="nav-link">About</a>
+      <button onclick="openModal('sched-modal')" class="nav-link bg-transparent border-none cursor-pointer">Schedule</button>
+      <a href="#events"   class="nav-link">Events</a>
+      <a href="#speakers" class="nav-link">Speakers</a>
+      <a href="#faq"      class="nav-link">FAQ</a>
+    </div>
+    <button onclick="openModal('reg-modal')" class="hidden md:flex btn-neon py-2.5 px-6 text-sm">
+      <i class="fas fa-bolt"></i><span>Register Free</span>
+    </button>
+    <button id="mob-btn" class="md:hidden text-white text-xl bg-transparent border-none cursor-pointer"><i class="fas fa-bars"></i></button>
+  </div>
+  <div id="mob-nav">
+    <a href="#about"  class="nav-link text-base" onclick="closeMob()">About</a>
+    <button onclick="closeMob();openModal('sched-modal')" class="nav-link text-base bg-transparent border-none text-left cursor-pointer">Schedule</button>
+    <a href="#events" class="nav-link text-base" onclick="closeMob()">Events</a>
+    <a href="#speakers" class="nav-link text-base" onclick="closeMob()">Speakers</a>
+    <a href="#faq"    class="nav-link text-base" onclick="closeMob()">FAQ</a>
+    <button onclick="closeMob();openModal('reg-modal')" class="btn-hot w-fit"><i class="fas fa-bolt"></i><span>Register Free</span></button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+  HERO
+═══════════════════════════════════════ -->
+<section id="home" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
+  <div class="blob" style="width:600px;height:600px;background:rgba(0,255,231,.1);top:-200px;left:-200px;"></div>
+  <div class="blob" style="width:500px;height:500px;background:rgba(255,45,120,.08);bottom:-100px;right:-150px;"></div>
+  <div class="blob" style="width:300px;height:300px;background:rgba(255,180,0,.06);top:45%;left:42%;"></div>
+  <div class="float absolute top-24 right-10 opacity-15 text-6xl hidden lg:block" style="animation-delay:1s;color:var(--neon)">◈</div>
+  <div class="float absolute top-1/3 left-6 opacity-12 text-4xl hidden lg:block" style="animation-delay:2s;color:var(--hot)">◆</div>
+  <div class="float absolute bottom-32 right-1/4 opacity-12 text-5xl hidden lg:block" style="color:var(--amber)">▲</div>
+
+  <div class="relative z-10 text-center px-6 max-w-7xl mx-auto w-full">
+    <div class="fade-up flex justify-center mb-4">
+      <div class="flex items-center gap-3 badge"><div class="sou-ring" style="width:28px;height:28px;font-size:.6rem;">SOU</div>Silver Oak University Presents</div>
+    </div>
+    <div class="fade-up" style="animation-delay:.1s">
+      <h1 class="hero-title glitch" data-text="NEXUS">NEXUS</h1>
+    </div>
+    <div class="fade-up" style="animation-delay:.15s">
+      <p class="display text-white text-4xl md:text-6xl tracking-[.3em] opacity-50">2025</p>
+    </div>
+    <div class="fade-up mt-5 mb-4" style="animation-delay:.2s">
+      <p class="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+        Gujarat's Biggest Annual Tech & Cultural Fest — <span class="neon-text font-semibold">3 Days</span> of Innovation, Competition, Music & Unforgettable Memories
+      </p>
+      <div class="flex flex-wrap justify-center gap-6 mt-5 text-sm text-slate-400 mono">
+        <span><i class="fas fa-calendar-alt mr-2" style="color:var(--neon)"></i>March 14–16, 2025</span>
+        <span><i class="fas fa-map-marker-alt mr-2" style="color:var(--hot)"></i>Silver Oak University, Ahmedabad</span>
+        <span><i class="fas fa-users mr-2" style="color:var(--amber)"></i>5000+ Attendees</span>
+        <span><i class="fas fa-trophy mr-2" style="color:var(--violet)"></i>₹5 Lakh+ Prize Pool</span>
+      </div>
+    </div>
+    <!-- CTA -->
+    <div class="fade-up flex flex-wrap justify-center gap-5 mb-12" style="animation-delay:.25s">
+      <button onclick="openModal('reg-modal')" class="btn-hot"><i class="fas fa-bolt"></i><span>Register Free — SOU Students</span></button>
+      <button onclick="openModal('sched-modal')" class="btn-neon"><i class="fas fa-calendar-week"></i><span>View Full Schedule</span></button>
+    </div>
+    <!-- Countdown -->
+    <div class="fade-up" style="animation-delay:.3s">
+      <p class="mono text-slate-500 text-xs tracking-widest mb-4">// EVENT COUNTDOWN</p>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <div class="cd-box"><div class="cd-num" id="c-d">00</div><div class="text-slate-500 text-xs mt-2 mono tracking-widest">DAYS</div></div>
+        <div class="cd-box"><div class="cd-num" id="c-h">00</div><div class="text-slate-500 text-xs mt-2 mono tracking-widest">HOURS</div></div>
+        <div class="cd-box"><div class="cd-num" id="c-m">00</div><div class="text-slate-500 text-xs mt-2 mono tracking-widest">MINS</div></div>
+        <div class="cd-box"><div class="cd-num" id="c-s">00</div><div class="text-slate-500 text-xs mt-2 mono tracking-widest">SECS</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-600 animate-bounce">
+    <span class="mono text-xs tracking-widest">SCROLL</span>
+    <i class="fas fa-chevron-down text-xs"></i>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap py-3 overflow-hidden">
+  <div class="ticker-track text-dark font-black text-sm tracking-widest" style="color:var(--dark)">
+    <span>★ HACKATHON</span><span>★ ROBO WARS</span><span>★ MUSIC NIGHT</span><span>★ CODE SPRINT</span>
+    <span>★ AI SUMMIT</span><span>★ DANCE BATTLE</span><span>★ STARTUP PITCH</span><span>★ ESPORTS ARENA</span>
+    <span>★ CTF CHALLENGE</span><span>★ SILVER OAK UNIVERSITY</span>
+    <span>★ HACKATHON</span><span>★ ROBO WARS</span><span>★ MUSIC NIGHT</span><span>★ CODE SPRINT</span>
+    <span>★ AI SUMMIT</span><span>★ DANCE BATTLE</span><span>★ STARTUP PITCH</span><span>★ ESPORTS ARENA</span>
+    <span>★ CTF CHALLENGE</span><span>★ SILVER OAK UNIVERSITY</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  ABOUT
+═══════════════════════════════════════ -->
+<section id="about" class="py-28 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="badge mb-6 fade-left">About NEXUS 2025</div>
+        <h2 class="display text-6xl md:text-8xl text-white mb-6 fade-left" style="animation-delay:.1s">
+          WHERE <span class="neon-text">TECH</span><br/>MEETS <span class="hot-text">PASSION</span>
+        </h2>
+        <p class="text-slate-400 text-lg leading-relaxed mb-4 fade-left" style="animation-delay:.15s">
+          NEXUS 2025 is the flagship annual festival of <strong class="text-white">Silver Oak University, Ahmedabad</strong> — a three-day extravaganza blending cutting-edge technology, electrifying competitions, and vibrant culture.
+        </p>
+        <p class="text-slate-400 leading-relaxed mb-4 fade-left" style="animation-delay:.18s">
+          Hosted across Silver Oak's sprawling campus on S.G. Highway, NEXUS draws participants from 100+ colleges across Gujarat, Rajasthan, Maharashtra and beyond. Whether you're a coder, builder, dancer, gamer or entrepreneur — there's a stage for you.
+        </p>
+        <p class="text-slate-400 leading-relaxed mb-8 fade-left" style="animation-delay:.2s">
+          With ₹5 Lakh+ in prizes, 30+ events, 20+ industry speakers, workshop certifications, and three legendary nights of entertainment — NEXUS 2025 is not just an event. It's a movement.
+        </p>
+        <div class="grid grid-cols-2 gap-4 fade-left" style="animation-delay:.25s">
+          <div class="card p-5"><i class="fas fa-calendar-check text-2xl mb-3" style="color:var(--neon)"></i><div class="text-white font-semibold">March 14–16, 2025</div><div class="text-slate-500 text-sm">3 Action-Packed Days</div></div>
+          <div class="card p-5"><i class="fas fa-university text-2xl mb-3" style="color:var(--hot)"></i><div class="text-white font-semibold">Silver Oak University</div><div class="text-slate-500 text-sm">S.G. Highway, Ahmedabad</div></div>
+          <div class="card p-5"><i class="fas fa-trophy text-2xl mb-3" style="color:var(--amber)"></i><div class="text-white font-semibold">₹5 Lakh+</div><div class="text-slate-500 text-sm">Total Prize Pool</div></div>
+          <div class="card p-5"><i class="fas fa-microchip text-2xl mb-3" style="color:var(--violet)"></i><div class="text-white font-semibold">30+ Events</div><div class="text-slate-500 text-sm">Tech, Cultural & Sports</div></div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-5 fade-up" style="animation-delay:.3s">
+        <div class="card p-8 text-center col-span-2"><div class="stat-num">5000+</div><div class="text-slate-400">Expected Attendees</div></div>
+        <div class="card p-8 text-center"><div class="stat-num">30+</div><div class="text-slate-400">Competitions</div></div>
+        <div class="card p-8 text-center"><div class="stat-num">20+</div><div class="text-slate-400">Speakers</div></div>
+        <div class="card p-8 text-center"><div class="stat-num">100+</div><div class="text-slate-400">Colleges</div></div>
+        <div class="card p-8 text-center"><div class="stat-num">₹5L</div><div class="text-slate-400">Prize Pool</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  HIGHLIGHTS — clickable
+═══════════════════════════════════════ -->
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14 fade-up">
+      <div class="badge mb-4">What Awaits You</div>
+      <h2 class="display text-5xl md:text-7xl text-white">EVENT <span class="neon-text">HIGHLIGHTS</span></h2>
+      <p class="text-slate-500 text-sm mt-3 mono">// click any card to see details</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="hl-card fade-up" onclick="openEvent('hackathon')"><div class="text-5xl mb-4">💻</div><h3 class="text-white font-bold text-lg mb-2">36hr Hackathon</h3><p class="text-slate-400 text-sm leading-relaxed mb-4">Build real solutions in 36 hours. Teams of 2–4. Mentors, cloud credits, free meals provided.</p><div class="mono text-xs" style="color:var(--neon)">Prize: ₹50,000 →</div></div>
+      <div class="hl-card fade-up" style="animation-delay:.1s" onclick="openEvent('robowars')"><div class="text-5xl mb-4">🤖</div><h3 class="text-white font-bold text-lg mb-2">Robo Wars</h3><p class="text-slate-400 text-sm leading-relaxed mb-4">Design and battle your custom robot. Last bot standing takes home the trophy and ₹40,000.</p><div class="mono text-xs" style="color:var(--hot)">Prize: ₹40,000 →</div></div>
+      <div class="hl-card fade-up" style="animation-delay:.2s" onclick="openEvent('startup')"><div class="text-5xl mb-4">🚀</div><h3 class="text-white font-bold text-lg mb-2">Startup Pitch</h3><p class="text-slate-400 text-sm leading-relaxed mb-4">Pitch to real VCs and angel investors. Win funding, incubation, and ₹1,00,000 grand prize.</p><div class="mono text-xs" style="color:var(--amber)">Prize: ₹1,00,000 →</div></div>
+      <div class="hl-card fade-up" style="animation-delay:.3s" onclick="openModal('sched-modal')"><div class="text-5xl mb-4">🎵</div><h3 class="text-white font-bold text-lg mb-2">3 Music Nights</h3><p class="text-slate-400 text-sm leading-relaxed mb-4">Live bands, DJ sets, dance battles, laser shows every night. Included FREE with registration.</p><div class="mono text-xs" style="color:var(--neon)">View Schedule →</div></div>
+      <div class="hl-card fade-up" onclick="openEvent('esports')"><div class="text-5xl mb-4">🎮</div><h3 class="text-white font-bold text-lg mb-2">Esports Arena</h3><p class="text-slate-400 text-sm leading-relaxed mb-4">BGMI, Valorant, FIFA — compete on the big stage with live commentary and spectators.</p><div class="mono text-xs" style="color:var(--hot)">Prize: ₹30,000 →</div></div>
+      <div class="hl-card fade-up" style="animation-delay:.1s" onclick="openEvent('ctf')"><div class="text-5xl mb-4">🔐</div><h3 class="text-white font-bold text-lg mb-2">CTF Hacking</h3><p class="text-slate-400 text-sm leading-relaxed mb-4">Capture The Flag cybersecurity challenges — binary exploit, web hacking, crypto & forensics.</p><div class="mono text-xs" style="color:var(--neon)">Prize: ₹20,000 →</div></div>
+      <div class="hl-card fade-up" style="animation-delay:.2s" onclick="openEvent('dance')"><div class="text-5xl mb-4">💃</div><h3 class="text-white font-bold text-lg mb-2">Dance Battle</h3><p class="text-slate-400 text-sm leading-relaxed mb-4">Inter-college group dance competition. All styles — hip-hop, western, classical fusion, freestyle.</p><div class="mono text-xs" style="color:var(--amber)">Prize: ₹25,000 →</div></div>
+      <div class="hl-card fade-up" style="animation-delay:.3s" onclick="openEvent('workshop')"><div class="text-5xl mb-4">☁️</div><h3 class="text-white font-bold text-lg mb-2">Workshop Zone</h3><p class="text-slate-400 text-sm leading-relaxed mb-4">Cloud, AI/ML, AR/VR, DevOps, Blockchain — hands-on with industry experts. Certificates issued.</p><div class="mono text-xs" style="color:var(--neon)">Limited Seats →</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  EVENTS GRID — clickable
+═══════════════════════════════════════ -->
+<section id="events" class="py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14 fade-up">
+      <div class="badge mb-4">Compete & Win</div>
+      <h2 class="display text-5xl md:text-7xl text-white">ALL <span class="amber-text">EVENTS</span></h2>
+      <p class="text-slate-400 mt-3 max-w-xl mx-auto text-sm">Click any event card to see full details, rules & prize info.</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-3 mb-10 fade-up">
+      <button class="filter-btn active-f" onclick="filterEv('all',this)">All Events</button>
+      <button class="filter-btn" onclick="filterEv('tech',this)">Technical</button>
+      <button class="filter-btn" onclick="filterEv('cultural',this)">Cultural</button>
+      <button class="filter-btn" onclick="filterEv('sports',this)">Sports & Gaming</button>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" id="ev-grid">
+      <div class="card event-card fade-up p-6" data-cat="tech" onclick="openEvent('hackathon')"><div class="flex items-center justify-between mb-4"><span class="text-3xl">💻</span><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon)">Technical</span></div><h4 class="text-white font-bold text-lg mb-2">Hackathon <span class="ec-arrow">→</span></h4><p class="text-slate-400 text-sm mb-4">36-hour build marathon. Real problem statements. Judges from Google, Amazon & ISRO.</p><div class="flex justify-between items-center text-xs"><span class="text-slate-500">Teams: 2–4</span><span style="color:var(--amber)" class="font-bold">₹50,000</span></div></div>
+      <div class="card event-card fade-up p-6" data-cat="tech" onclick="openEvent('robowars')" style="animation-delay:.05s"><div class="flex items-center justify-between mb-4"><span class="text-3xl">🤖</span><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon)">Technical</span></div><h4 class="text-white font-bold text-lg mb-2">Robo Wars <span class="ec-arrow">→</span></h4><p class="text-slate-400 text-sm mb-4">Build and battle. Last bot standing wins. Weight ≤ 15 kg. Open category.</p><div class="flex justify-between items-center text-xs"><span class="text-slate-500">Teams: 2–3</span><span style="color:var(--amber)" class="font-bold">₹40,000</span></div></div>
+      <div class="card event-card fade-up p-6" data-cat="tech" onclick="openEvent('ctf')" style="animation-delay:.1s"><div class="flex items-center justify-between mb-4"><span class="text-3xl">🔐</span><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon)">Technical</span></div><h4 class="text-white font-bold text-lg mb-2">CTF Challenge <span class="ec-arrow">→</span></h4><p class="text-slate-400 text-sm mb-4">Cybersecurity puzzles — binary exploit, web hacking, crypto, OSINT & forensics.</p><div class="flex justify-between items-center text-xs"><span class="text-slate-500">Solo / Duo</span><span style="color:var(--amber)" class="font-bold">₹20,000</span></div></div>
+      <div class="card event-card fade-up p-6" data-cat="tech" onclick="openEvent('codesprint')"><div class="flex items-center justify-between mb-4"><span class="text-3xl">⚡</span><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon)">Technical</span></div><h4 class="text-white font-bold text-lg mb-2">Code Sprint <span class="ec-arrow">→</span></h4><p class="text-slate-400 text-sm mb-4">1-hour DSA sprint on LeetCode-style problems. Test your algorithmic thinking under pressure.</p><div class="flex justify-between items-center text-xs"><span class="text-slate-500">Solo</span><span style="color:var(--amber)" class="font-bold">₹15,000</span></div></div>
+      <div class="card event-card fade-up p-6" data-cat="tech" onclick="openEvent('startup')" style="animation-delay:.05s"><div class="flex items-center justify-between mb-4"><span class="text-3xl">🚀</span><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(0,255,231,.1);color:var(--neon)">Technical</span></div><h4 class="text-white font-bold text-lg mb-2">Startup Pitch <span class="ec-arrow">→</span></h4><p class="text-slate-400 text-sm mb-4">Pitch to VCs and angel investors. Funding, mentorship & incubation support available.</p><div class="flex justify-between items-center text-xs"><span class="text-slate-500">Teams: 2–5</span><span style="color:var(--amber)" class="font-bold">₹1,00,000</span></div></div>
+      <div class="card event-card fade-up p-6" data-cat="cultural" onclick="openEvent('dance')" style="animation-delay:.1s"><div class="flex items-center justify-between mb-4"><span class="text-3xl">💃</span><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(255,45,120,.1);color:var(--hot)">Cultural</span></div><h4 class="text-white font-bold text-lg mb-2">Dance Battle <span class="ec-arrow">→</span></h4><p class="text-slate-400 text-sm mb-4">Inter-college group dance. Hip-hop, western, classical fusion, or freestyle — all welcome.</p><div class="flex justify-between items-center text-xs"><span class="text-slate-500">Group: 5–15</span><span style="color:var(--amber)" class="font-bold">₹25,000</span></div></div>
+      <div class="card event-card fade-up p-6" data-cat="cultural" onclick="openEvent('singing')"><div class="flex items-center justify-between mb-4"><span class="text-3xl">🎤</span><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(255,45,120,.1);color:var(--hot)">Cultural</span></div><h4 class="text-white font-bold text-lg mb-2">Solo Singing <span class="ec-arrow">→</span></h4><p class="text-slate-400 text-sm mb-4">Showcase your vocal talent. Hindi, English, Gujarati — any genre, any year group.</p><div class="flex justify-between items-center text-xs"><span class="text-slate-500">Solo</span><span style="color:var(--amber)" class="font-bold">₹10,000</span></div></div>
+      <div class="card event-card fade-up p-6" data-cat="cultural" onclick="openEvent('streetplay')" style="animation-delay:.05s"><div class="flex items-center justify-between mb-4"><span class="text-3xl">🎭</span><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(255,45,120,.1);color:var(--hot)">Cultural</span></div><h4 class="text-white font-bold text-lg mb-2">Street Play <span class="ec-arrow">→</span></h4><p class="text-slate-400 text-sm mb-4">Nukkad Natak with social message. 10–15 minutes. Judged on creativity, acting & impact.</p><div class="flex justify-between items-center text-xs"><span class="text-slate-500">Group: 6–12</span><span style="color:var(--amber)" class="font-bold">₹12,000</span></div></div>
+      <div class="card event-card fade-up p-6" data-cat="sports" onclick="openEvent('esports')" style="animation-delay:.1s"><div class="flex items-center justify-between mb-4"><span class="text-3xl">🎮</span><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(255,180,0,.1);color:var(--amber)">Gaming</span></div><h4 class="text-white font-bold text-lg mb-2">Esports — BGMI <span class="ec-arrow">→</span></h4><p class="text-slate-400 text-sm mb-4">Squads of 4 compete in Battle Royale knockout format. Live streamed with commentary.</p><div class="flex justify-between items-center text-xs"><span class="text-slate-500">Squad: 4</span><span style="color:var(--amber)" class="font-bold">₹20,000</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  SPEAKERS — clickable
+═══════════════════════════════════════ -->
+<section id="speakers" class="py-28">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14 fade-up">
+      <div class="badge mb-4">Industry Legends</div>
+      <h2 class="display text-5xl md:text-7xl text-white">GUEST <span class="neon-text">SPEAKERS</span></h2>
+      <p class="text-slate-500 text-sm mt-3 mono">// click a speaker to read their full profile</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="sp-card p-7 text-center fade-up" onclick="openSpeaker('rk')"><div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-black" style="background:linear-gradient(135deg,#1e40af,#7c3aed);font-family:'Bebas Neue',sans-serif;">RK</div><h4 class="text-white font-bold text-lg">Rahul Kapoor</h4><p class="text-sm mb-1" style="color:var(--neon)">Senior Engineer, Google India</p><p class="text-slate-500 text-xs mb-4">ML Infrastructure & LLMs Expert</p><span class="mono text-xs" style="color:var(--hot)">View Profile →</span></div>
+      <div class="sp-card p-7 text-center fade-up" style="animation-delay:.1s" onclick="openSpeaker('ps')"><div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-black" style="background:linear-gradient(135deg,#be185d,#9f1239);font-family:'Bebas Neue',sans-serif;">PS</div><h4 class="text-white font-bold text-lg">Priya Shah</h4><p class="text-sm mb-1" style="color:var(--hot)">Founder & CEO, TechSpark</p><p class="text-slate-500 text-xs mb-4">Forbes 30 Under 30 · Serial Entrepreneur</p><span class="mono text-xs" style="color:var(--hot)">View Profile →</span></div>
+      <div class="sp-card p-7 text-center fade-up" style="animation-delay:.2s" onclick="openSpeaker('am')"><div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-black" style="background:linear-gradient(135deg,#065f46,#0f766e);font-family:'Bebas Neue',sans-serif;">AM</div><h4 class="text-white font-bold text-lg">Arjun Mehta</h4><p class="text-sm mb-1" style="color:var(--amber)">VP Engineering, Zepto</p><p class="text-slate-500 text-xs mb-4">Distributed Systems & Backend</p><span class="mono text-xs" style="color:var(--hot)">View Profile →</span></div>
+      <div class="sp-card p-7 text-center fade-up" style="animation-delay:.3s" onclick="openSpeaker('np')"><div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-black" style="background:linear-gradient(135deg,#7c2d12,#c2410c);font-family:'Bebas Neue',sans-serif;">NP</div><h4 class="text-white font-bold text-lg">Dr. Neha Patel</h4><p class="text-sm mb-1" style="color:var(--neon)">Research Scientist, Microsoft</p><p class="text-slate-500 text-xs mb-4">NLP & Computer Vision · ex-IIT Bombay</p><span class="mono text-xs" style="color:var(--hot)">View Profile →</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPONSORS -->
+<section class="py-14 border-t border-b" style="border-color:var(--border)">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-8 fade-up"><p class="mono text-slate-500 text-xs tracking-widest mb-2">// POWERED BY</p><h3 class="display text-3xl text-white">OUR <span class="neon-text">SPONSORS</span></h3></div>
+    <div class="overflow-hidden"><div class="sp-track items-center py-4 flex">
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">GOOGLE</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">AMAZON</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">MICROSOFT</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">INFOSYS</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">WIPRO</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">ADOBE</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">GITHUB</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">TATA ELXSI</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">GOOGLE</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">AMAZON</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">MICROSOFT</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">INFOSYS</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">WIPRO</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">ADOBE</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">GITHUB</div>
+      <div class="text-slate-500 hover:text-white transition-colors font-bold text-xl tracking-widest flex-shrink-0 display" style="margin-right:48px">TATA ELXSI</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-28">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="text-center mb-14 fade-up">
+      <div class="badge mb-4">Got Questions?</div>
+      <h2 class="display text-5xl md:text-7xl text-white">FAQ<span class="amber-text">S</span></h2>
+    </div>
+    <div class="space-y-1 fade-up">
+      <div class="faq-item py-5"><button class="w-full flex justify-between items-center text-left faq-btn"><span class="text-white font-semibold text-lg">Is registration free for Silver Oak University students?</span><i class="fas fa-plus faq-ico text-slate-400"></i></button><div class="faq-ans text-slate-400 text-sm leading-relaxed mt-2">Yes! All currently enrolled Silver Oak University students register absolutely free — all 3 days, all events, all night concerts, meals included. Bring your valid SOU Student ID card for entry. External participants pay ₹199 only.</div></div>
+      <div class="faq-item py-5"><button class="w-full flex justify-between items-center text-left faq-btn"><span class="text-white font-semibold text-lg">Can students from other colleges participate?</span><i class="fas fa-plus faq-ico text-slate-400"></i></button><div class="faq-ans text-slate-400 text-sm leading-relaxed mt-2">Absolutely! NEXUS 2025 is open to all college and university students across India. External participants register for ₹199 and can participate in all events. Bring your college ID for verification. Teams from multiple colleges are also allowed.</div></div>
+      <div class="faq-item py-5"><button class="w-full flex justify-between items-center text-left faq-btn"><span class="text-white font-semibold text-lg">Where is Silver Oak University located?</span><i class="fas fa-plus faq-ico text-slate-400"></i></button><div class="faq-ans text-slate-400 text-sm leading-relaxed mt-2">Silver Oak University is located on S.G. Highway, Ahmedabad — 380055, Gujarat, India. The campus is easily accessible by road. NEXUS 2025 will be held across the main campus including the Main Auditorium, Innovation Lab, Open Air Stage, and Sports Complex.</div></div>
+      <div class="faq-item py-5"><button class="w-full flex justify-between items-center text-left faq-btn"><span class="text-white font-semibold text-lg">What is the hackathon theme for 2025?</span><i class="fas fa-plus faq-ico text-slate-400"></i></button><div class="faq-ans text-slate-400 text-sm leading-relaxed mt-2">This year's theme is "Tech for Bharat" — build solutions addressing real challenges in healthcare, agriculture, education, or sustainability for India. Problem statements are released at the kickoff ceremony on March 14, 2025.</div></div>
+      <div class="faq-item py-5"><button class="w-full flex justify-between items-center text-left faq-btn"><span class="text-white font-semibold text-lg">Will accommodation be available?</span><i class="fas fa-plus faq-ico text-slate-400"></i></button><div class="faq-ans text-slate-400 text-sm leading-relaxed mt-2">Yes! SOU hostels are available for outstation participants at ₹300/night on a first-come-first-served basis. Hackathon participants have 24/7 campus access. Book through the registration form or email nexus2025@silveroakuni.ac.in.</div></div>
+      <div class="faq-item py-5"><button class="w-full flex justify-between items-center text-left faq-btn"><span class="text-white font-semibold text-lg">Will I receive a certificate?</span><i class="fas fa-plus faq-ico text-slate-400"></i></button><div class="faq-ans text-slate-400 text-sm leading-relaxed mt-2">Every registered participant receives a digital participation certificate issued by Silver Oak University. Workshop attendees get separate merit certificates. Winners receive physical trophies, medals, and award certificates at the closing ceremony on March 16.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT STRIP -->
+<section class="py-16 border-t" style="border-color:var(--border)">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-8 text-center">
+      <div class="fade-up"><div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(0,255,231,.1);border:1px solid rgba(0,255,231,.3)"><i class="fas fa-envelope" style="color:var(--neon)"></i></div><h4 class="text-white font-semibold mb-1">Email Us</h4><p class="text-slate-400 text-sm">nexus2025@silveroakuni.ac.in</p></div>
+      <div class="fade-up" style="animation-delay:.1s"><div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(255,45,120,.1);border:1px solid rgba(255,45,120,.3)"><i class="fas fa-phone" style="color:var(--hot)"></i></div><h4 class="text-white font-semibold mb-1">Call Us</h4><p class="text-slate-400 text-sm">+91 98765 43210 · Fest Coordinator</p></div>
+      <div class="fade-up" style="animation-delay:.2s"><div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(255,180,0,.1);border:1px solid rgba(255,180,0,.3)"><i class="fas fa-map-marker-alt" style="color:var(--amber)"></i></div><h4 class="text-white font-semibold mb-1">Find Us</h4><p class="text-slate-400 text-sm">Silver Oak University, S.G. Highway, Ahmedabad – 380055</p></div>
+    </div>
+    <!-- Final CTA -->
+    <div class="mt-14 text-center fade-up">
+      <h2 class="display text-4xl md:text-6xl text-white mb-4">READY TO JOIN <span class="neon-text">NEXUS 2025?</span></h2>
+      <p class="text-slate-400 mb-8 max-w-lg mx-auto">Registration is FREE for all Silver Oak University students. Don't miss Gujarat's biggest tech fest!</p>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <button onclick="openModal('reg-modal')" class="btn-hot text-lg px-10 py-4"><i class="fas fa-bolt"></i><span>Register FREE Now</span></button>
+        <button onclick="openModal('sched-modal')" class="btn-neon text-lg px-10 py-4"><i class="fas fa-calendar-week"></i><span>View Schedule</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t py-10" style="border-color:var(--border)">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-3">
+      <div class="sou-ring">SOU</div>
+      <div><span class="display text-white text-xl tracking-widest">NEXUS<span class="neon-text">25</span></span><span class="text-slate-600 text-xs block">Silver Oak University Annual Tech Fest</span></div>
+    </div>
+    <div class="flex gap-5">
+      <a href="#" class="text-slate-500 hover:text-pink-400 transition-colors text-xl"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="text-slate-500 hover:text-sky-400 transition-colors text-xl"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="text-slate-500 hover:text-blue-400 transition-colors text-xl"><i class="fab fa-linkedin"></i></a>
+      <a href="#" class="text-slate-500 hover:text-red-400 transition-colors text-xl"><i class="fab fa-youtube"></i></a>
+    </div>
+    <p class="text-slate-600 text-sm mono">© 2025 NEXUS · Silver Oak University</p>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════
+  JS
+═══════════════════════════════════════ -->
+<script>
+/* ── MODAL HELPERS ── */
+function openModal(id){
+  document.getElementById(id).classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeModal(id,e){
+  if(e && e.target!==document.getElementById(id)) return;
+  document.getElementById(id).classList.remove('show');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ document.querySelectorAll('.modal-overlay.show').forEach(m=>{ m.classList.remove('show'); }); document.body.style.overflow=''; }});
+
+/* ── MOBILE NAV ── */
+document.getElementById('mob-btn').addEventListener('click',()=>{
+  const n=document.getElementById('mob-nav');
+  n.classList.toggle('open');
+  document.getElementById('mob-btn').innerHTML=n.classList.contains('open')
+    ?'<i class="fas fa-times"></i>':'<i class="fas fa-bars"></i>';
+});
+function closeMob(){ document.getElementById('mob-nav').classList.remove('open'); document.getElementById('mob-btn').innerHTML='<i class="fas fa-bars"></i>'; }
+
+/* ── COUNTDOWN ── */
+function tick(){
+  const t=new Date('2025-03-14T09:00:00'),n=new Date();
+  let d=t-n; if(d<0)d=0;
+  const dd=Math.floor(d/86400000); d-=dd*86400000;
+  const hh=Math.floor(d/3600000);  d-=hh*3600000;
+  const mm=Math.floor(d/60000);    d-=mm*60000;
+  const ss=Math.floor(d/1000);
+  document.getElementById('c-d').textContent=String(dd).padStart(2,'0');
+  document.getElementById('c-h').textContent=String(hh).padStart(2,'0');
+  document.getElementById('c-m').textContent=String(mm).padStart(2,'0');
+  document.getElementById('c-s').textContent=String(ss).padStart(2,'0');
+}
+tick(); setInterval(tick,1000);
+
+/* ── SCROLL FADE ── */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{ if(e.isIntersecting)e.target.classList.add('visible'); }),{threshold:.1});
+document.querySelectorAll('.fade-up,.fade-left').forEach(el=>obs.observe(el));
+
+/* ── SCHEDULE TABS (modal) ── */
+function switchSchDay(id,btn){
+  document.querySelectorAll('.sch-day').forEach(d=>d.classList.add('hidden'));
+  document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.remove('hidden');
+  btn.classList.add('active');
+}
+
+/* ── EVENT FILTER ── */
+function filterEv(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active-f'));
+  btn.classList.add('active-f');
+  document.querySelectorAll('.event-card').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.cat===cat)?'block':'none';
+  });
+}
+
+/* ── FAQ ── */
+document.querySelectorAll('.faq-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const ans=btn.nextElementSibling, ico=btn.querySelector('.faq-ico'), open=ans.classList.contains('open');
+    document.querySelectorAll('.faq-ans').forEach(a=>a.classList.remove('open'));
+    document.querySelectorAll('.faq-ico').forEach(i=>i.classList.remove('open'));
+    if(!open){ ans.classList.add('open'); ico.classList.add('open'); }
+  });
+});
+
+/* ── REGISTER SUBMIT ── */
+function submitReg(){
+  const name=document.getElementById('r-name').value.trim();
+  const email=document.getElementById('r-email').value.trim();
+  if(!name||!email){ alert('Please fill in at least your name and email.'); return; }
+  document.getElementById('conf-name').textContent=name;
+  document.getElementById('conf-email').textContent=email||'your email';
+  document.getElementById('reg-step1').classList.add('hidden');
+  document.getElementById('reg-step2').classList.remove('hidden');
+}
+
+/* ── EVENT DATA ── */
+const evData={
+  hackathon:{icon:'💻',title:'HACKATHON',strip:'linear-gradient(90deg,var(--neon),var(--hot))',cat:'Technical',prize:'₹50,000',team:'Teams of 2–4',desc:'A 36-hour non-stop coding marathon hosted at Silver Oak University\'s Innovation Lab. Teams are given real-world problem statements from industry partners and must build working prototypes. Judges from Google, Amazon, and ISRO evaluate solutions on innovation, feasibility, and technical execution. Cloud credits, mentors, meals, and energy drinks are provided throughout.',details:[{icon:'🗓️',label:'Date',val:'March 14–16 (36hrs)'},{icon:'🏛️',label:'Venue',val:'Innovation Lab, SOU'},{icon:'👥',label:'Team Size',val:'2–4 Members'},{icon:'🎯',label:'Theme',val:'Tech for Bharat'}],rules:['All branches eligible','Each member must register individually','Projects must be original — no pre-built code','Presentation + live demo required on Day 3','Judges\' decision is final']},
+  robowars:{icon:'🤖',title:'ROBO WARS',strip:'linear-gradient(90deg,var(--hot),var(--amber))',cat:'Technical',prize:'₹40,000',team:'Teams of 2–3',desc:'Build your combat robot and enter the arena at Silver Oak University\'s Indoor Sports Complex. The last robot standing wins. This year\'s format includes qualifier rounds on Day 1, semi-finals and finals on Day 2. Robots are judged on endurance, speed, and damage dealt. Technical volunteers are on-site for repairs between rounds.',details:[{icon:'⚖️',label:'Weight Limit',val:'≤ 15 kg'},{icon:'🔌',label:'Power',val:'≤ 24V Battery'},{icon:'📅',label:'Qualifiers',val:'March 14, 2:00 PM'},{icon:'🏆',label:'Finals',val:'March 15, 4:00 PM'}],rules:['Wireless control only (no tethered bots)','No flames, liquids, or EMP devices allowed','Robots must fit in 60cm × 60cm × 60cm box','Safety cover required for all sharp edges','Teams must be present 30 minutes before match']},
+  startup:{icon:'🚀',title:'STARTUP PITCH',strip:'linear-gradient(90deg,var(--amber),var(--neon))',cat:'Technical',prize:'₹1,00,000',team:'Teams of 2–5',desc:'Pitch your startup or business idea to a panel of real venture capitalists, angel investors, and serial entrepreneurs at Silver Oak University\'s Conference Hall. Pre-screening is required — apply via the registration form. Top 10 teams selected for live pitching on Day 2. Winners receive ₹1,00,000 prize, 3-month incubation at SOU Innovation Hub, and investor introductions.',details:[{icon:'📝',label:'Application',val:'Due March 7, 2025'},{icon:'⏱️',label:'Pitch Duration',val:'7 min + 3 min Q&A'},{icon:'🏛️',label:'Venue',val:'Conference Hall, SOU'},{icon:'💡',label:'Domain',val:'Any sector'}],rules:['Pre-submission of 3-slide deck required','Idea must be original and not yet funded','All team members must be current students','Business model explanation is mandatory','Judges\' investment decisions are their own']},
+  esports:{icon:'🎮',title:'ESPORTS ARENA',strip:'linear-gradient(90deg,var(--violet),var(--hot))',cat:'Gaming',prize:'₹30,000',team:'Squads of 4',desc:'Compete in the BGMI Championship at NEXUS 2025\'s dedicated Esports Zone — equipped with high-spec gaming PCs, professional peripherals, and a giant spectator screen. Valorant 5v5 and FIFA 1v1 rounds are also running in parallel. All finals are live-streamed with professional commentary. Spectators welcome — it\'s a full stadium experience.',details:[{icon:'🎯',label:'Games',val:'BGMI, Valorant, FIFA'},{icon:'📅',label:'Date',val:'March 15–16'},{icon:'💻',label:'Equipment',val:'Provided on site'},{icon:'🎙️',label:'Format',val:'Knockout + Finals'}],rules:['Players must carry their own game accounts','All squad members must register individually','Use of hacks or mods leads to immediate DQ','Decision of referees is final','Mobile devices not allowed for BGMI — SOU PCs used']},
+  ctf:{icon:'🔐',title:'CTF CHALLENGE',strip:'linear-gradient(90deg,var(--neon),var(--violet))',cat:'Technical',prize:'₹20,000',team:'Solo or Duo',desc:'Capture The Flag is a cybersecurity competition where participants solve challenges across multiple domains: binary exploitation, web application hacking, reverse engineering, cryptography, OSINT, and digital forensics. The CTF runs on a custom platform hosted by Silver Oak University\'s cybersecurity lab. Score is based on flags captured and time taken.',details:[{icon:'🔓',label:'Categories',val:'Web, Crypto, Binary, OSINT'},{icon:'⏱️',label:'Duration',val:'6 hours'},{icon:'📅',label:'Date',val:'March 15, 10AM–4PM'},{icon:'💻',label:'Setup',val:'Kali Linux recommended'}],rules:['No sharing flags between teams','Attacking the CTF infrastructure is banned','Hints available (cost points)','Teams may be solo or duo','All skill levels welcome — beginner to advanced']},
+  dance:{icon:'💃',title:'DANCE BATTLE',strip:'linear-gradient(90deg,var(--hot),var(--violet))',cat:'Cultural',prize:'₹25,000',team:'Groups of 5–15',desc:'The most electrifying cultural event at NEXUS — an inter-college group dance battle that fills the Open Air Stage with energy, colour, and jaw-dropping performances. All styles are welcome: hip-hop, western, classical fusion, Bollywood, contemporary, and freestyle. Judged on choreography, synchrony, expression, and crowd response. Past years have seen viral moments!',details:[{icon:'🎵',label:'Style',val:'All genres accepted'},{icon:'⏱️',label:'Duration',val:'5–8 minutes per group'},{icon:'📅',label:'Date',val:'March 15, 7:00 PM'},{icon:'🌟',label:'Judged On',val:'Choreography, Energy, Sync'}],rules:['Music track must be submitted 2 days prior','No objectionable or offensive content','Costume changes allowed within performance time','Props allowed but must not damage the stage','Minimum 5 members required to qualify']},
+  singing:{icon:'🎤',title:'SOLO SINGING',strip:'linear-gradient(90deg,var(--amber),var(--hot))',cat:'Cultural',prize:'₹10,000',team:'Solo',desc:'Showcase your vocal talent to thousands of spectators at Silver Oak University\'s Main Auditorium. All genres accepted — Bollywood, Indie, Gujarati folk, classical, English pop, or anything you love. Live instrument backing available. Judged on voice quality, pitch accuracy, stage presence, and audience connect.',details:[{icon:'🎼',label:'Genre',val:'Any — Hindi, English, Gujarati'},{icon:'⏱️',label:'Duration',val:'3–5 minutes'},{icon:'🎹',label:'Backing',val:'Instrument tracks available'},{icon:'📅',label:'Date',val:'March 15, 2:00 PM'}],rules:['Karaoke tracks must be submitted 1 day prior','Original compositions given bonus points','No lip-syncing allowed','Registration limited to 30 participants','Both classical and western styles judged separately']},
+  streetplay:{icon:'🎭',title:'STREET PLAY',strip:'linear-gradient(90deg,var(--violet),var(--neon))',cat:'Cultural',prize:'₹12,000',team:'Groups of 6–12',desc:'Nukkad Natak — street theatre with purpose. A high-energy, no-prop, no-costume performance style where your team delivers a powerful social message in 10–15 minutes. Topics like environment, mental health, gender equality, and digital literacy are popular. Judged on message clarity, acting quality, and audience impact. Past performances have gone viral on social media.',details:[{icon:'📋',label:'Theme',val:'Social issue of your choice'},{icon:'⏱️',label:'Duration',val:'10–15 minutes'},{icon:'📅',label:'Date',val:'March 14, 4:00 PM'},{icon:'🏆',label:'Criteria',val:'Message, Acting, Impact'}],rules:['No microphones or amplification — natural voice only','Minimal props allowed (handheld only)','Script/outline must be submitted 3 days prior','No offensive, political, or religious content','Audience interaction encouraged']},
+  workshop:{icon:'☁️',title:'WORKSHOP ZONE',strip:'linear-gradient(90deg,var(--neon),var(--amber))',cat:'Workshop',prize:'Free / Certificate',team:'Individual',desc:'NEXUS 2025 features a full Workshop Zone at Silver Oak University\'s Computer Lab Block with 8 parallel sessions led by industry professionals across 3 days. Topics include Cloud & DevOps (AWS/Azure), Generative AI & LLMs, Cybersecurity Fundamentals, AR/VR Development, Blockchain Basics, Web3, Full-Stack Web Dev, and Machine Learning with Python. All workshops issue Silver Oak University merit certificates.',details:[{icon:'🧑‍💻',label:'Sessions',val:'8 workshops over 3 days'},{icon:'📋',label:'Certificate',val:'SOU merit certificate'},{icon:'🪑',label:'Seats',val:'50 per session'},{icon:'💰',label:'Cost',val:'Included in registration'}],rules:['Seats are limited — first come first served','Laptop required for hands-on workshops','No prior experience needed for beginner sessions','Attendance of 80% required for certificate','Register specific workshops via email']}
+};
+
+function openEvent(key){
+  const d=evData[key]; if(!d)return;
+  document.getElementById('ev-modal-strip').style.background=d.strip;
+  document.getElementById('ev-icon').textContent=d.icon;
+  document.getElementById('ev-title').textContent=d.title;
+  document.getElementById('ev-cat-badge').innerHTML=`<span class="badge" style="font-size:.65rem;">${d.cat}</span>`;
+  document.getElementById('ev-prize').textContent=d.prize;
+  document.getElementById('ev-team').textContent=d.team;
+  document.getElementById('ev-desc').textContent=d.desc;
+  const grid=document.getElementById('ev-details-grid');
+  grid.innerHTML=d.details.map(x=>`<div class="bg-white/3 border border-white/8 rounded-lg p-4"><div class="text-lg mb-1">${x.icon}</div><div class="text-slate-500 text-xs mono">${x.label}</div><div class="text-white font-semibold text-sm mt-1">${x.val}</div></div>`).join('');
+  const rules=document.getElementById('ev-rules');
+  rules.innerHTML=d.rules.map(r=>`<li class="flex gap-2"><i class="fas fa-chevron-right text-xs mt-1 flex-shrink-0" style="color:var(--neon)"></i>${r}</li>`).join('');
+  openModal('ev-modal');
+}
+
+/* ── SPEAKER DATA ── */
+const spData={
+  rk:{init:'RK',bg:'linear-gradient(135deg,#1e40af,#7c3aed)',name:'Rahul Kapoor',role:'Senior Software Engineer',org:'Google India · Hyderabad',bio:'Rahul is a 12-year Google veteran who leads the Search AI infrastructure team responsible for serving LLM-powered features to 2 billion users daily. He completed his B.Tech from IIT Delhi and joined Google fresh from campus. His research has been presented at NeurIPS and Google I/O. He is passionate about teaching and has mentored 500+ students through Google\'s developer programs. At NEXUS 2025, he will deliver a keynote on "Building at Scale — LLMs in Production."',stats:[{label:'Years at Google',val:'12+'},{label:'Papers Published',val:'8'},{label:'Students Mentored',val:'500+'},{label:'Talk at NEXUS',val:'Day 1 Keynote'}],topicLabel:'🎤 Keynote Topic',topicBox:'<p class="text-slate-300 text-sm"><strong class="text-white">AI & The Future of Engineering</strong> — How LLMs are reshaping software development, what skills engineers need in 2025, and opportunities for students in the GenAI era.</p>',social:'<a href="#" class="text-slate-400 hover:text-blue-400 transition-colors text-xl"><i class="fab fa-linkedin"></i></a><a href="#" class="text-slate-400 hover:text-sky-400 transition-colors text-xl ml-4"><i class="fab fa-twitter"></i></a>'},
+  ps:{init:'PS',bg:'linear-gradient(135deg,#be185d,#9f1239)',name:'Priya Shah',role:'Founder & CEO',org:'TechSpark · Bengaluru',bio:'Priya is a serial entrepreneur and Forbes 30 Under 30 (India, 2023) who built three tech startups, two of which were acquired. Her latest venture, TechSpark, is a SaaS platform for SME digitalisation that serves 15,000+ businesses across India. She started coding at 15, completed her B.Tech IT from Silver Oak University (Batch of 2016), and went on to build a company valued at ₹80 Crore by age 28. Priya is an inspiration for every SOU student — proof that greatness is possible right here.',stats:[{label:'Startups Founded',val:'3'},{label:'Company Valuation',val:'₹80 Cr'},{label:'Alumni of',val:'Silver Oak Uni'},{label:'Talk at NEXUS',val:'Day 2 Panel'}],topicLabel:'🎤 Session Topic',topicBox:'<p class="text-slate-300 text-sm"><strong class="text-white">From SOU to Startup — Building India\'s Next Unicorn</strong> — Priya shares her journey from SOU campus to building a ₹80 Crore company, lessons from failure, and how you can start your entrepreneurship journey right now.</p>',social:'<a href="#" class="text-slate-400 hover:text-blue-400 transition-colors text-xl"><i class="fab fa-linkedin"></i></a><a href="#" class="text-slate-400 hover:text-pink-400 transition-colors text-xl ml-4"><i class="fab fa-instagram"></i></a>'},
+  am:{init:'AM',bg:'linear-gradient(135deg,#065f46,#0f766e)',name:'Arjun Mehta',role:'VP Engineering',org:'Zepto · Mumbai',bio:'Arjun leads backend engineering at Zepto, India\'s fastest-growing quick-commerce platform. He joined Zepto as the 10th engineer and scaled the engineering team to 300+, while building systems that handle 5 million orders per day with 99.99% uptime. Before Zepto, he worked at Razorpay and Flipkart. He completed his M.Tech from IIT Bombay. At NEXUS, he will conduct a masterclass on distributed systems and share war stories from hypergrowth startups.',stats:[{label:'Orders/Day Scaled',val:'5M+'},{label:'Team Built',val:'300 Engineers'},{label:'Prior Companies',val:'Flipkart, Razorpay'},{label:'Talk at NEXUS',val:'Day 2 Masterclass'}],topicLabel:'🎤 Masterclass Topic',topicBox:'<p class="text-slate-300 text-sm"><strong class="text-white">Engineering at Hypergrowth Scale</strong> — What happens when your startup goes from 100 to 5 million orders/day? Arjun breaks down system design decisions, team scaling challenges, and the architecture behind Zepto.</p>',social:'<a href="#" class="text-slate-400 hover:text-blue-400 transition-colors text-xl"><i class="fab fa-linkedin"></i></a>'},
+  np:{init:'NP',bg:'linear-gradient(135deg,#7c2d12,#c2410c)',name:'Dr. Neha Patel',role:'Principal Research Scientist',org:'Microsoft Research · Bengaluru',bio:'Dr. Neha is a celebrated NLP and Computer Vision researcher at Microsoft Research India. She holds a PhD from IIT Bombay (where she was also faculty for 3 years) and has published 25+ peer-reviewed papers at top-tier conferences including ACL, CVPR, and ICLR. Her work on multilingual NLP for Indian languages has directly improved Microsoft\'s AI products for 500 million users. She is also a strong advocate for women in STEM and runs a mentorship program for 200+ students.',stats:[{label:'Papers Published',val:'25+'},{label:'Citations',val:'3000+'},{label:'Research Focus',val:'NLP · Computer Vision'},{label:'Talk at NEXUS',val:'Day 1 Panel'}],topicLabel:'🎤 Panel Session',topicBox:'<p class="text-slate-300 text-sm"><strong class="text-white">AI Research for India — Opportunities at the Frontier</strong> — Dr. Neha discusses the exploding demand for AI researchers, how to get into research as an undergraduate, and the exciting problems still unsolved in NLP for Indian languages.</p>',social:'<a href="#" class="text-slate-400 hover:text-blue-400 transition-colors text-xl"><i class="fab fa-linkedin"></i></a><a href="#" class="text-slate-400 hover:text-sky-400 transition-colors text-xl ml-4"><i class="fab fa-twitter"></i></a>'}
+};
+
+function openSpeaker(key){
+  const d=spData[key]; if(!d)return;
+  const av=document.getElementById('sp-avatar');
+  av.textContent=d.init; av.style.background=d.bg;
+  document.getElementById('sp-name').textContent=d.name;
+  document.getElementById('sp-role').style.color='var(--neon)';
+  document.getElementById('sp-role').textContent=d.role;
+  document.getElementById('sp-org').textContent=d.org;
+  document.getElementById('sp-bio').textContent=d.bio;
+  document.getElementById('sp-stats').innerHTML=d.stats.map(s=>`<div class="bg-white/3 border border-white/8 rounded-lg p-4"><div class="text-slate-500 text-xs mono">${s.label}</div><div class="text-white font-bold mt-1">${s.val}</div></div>`).join('');
+  document.getElementById('sp-topic-label').textContent=d.topicLabel;
+  document.getElementById('sp-topic-box').innerHTML=d.topicBox;
+  document.getElementById('sp-social').innerHTML=d.social;
+  openModal('sp-modal');
+}
+
+/* ── 3D tilt ── */
+document.querySelectorAll('.card,.sp-card,.hl-card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect(),x=(e.clientX-r.left-r.width/2)/r.width,y=(e.clientY-r.top-r.height/2)/r.height;
+    c.style.transform=`perspective(800px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateY(-6px)`;
+  });
+  c.addEventListener('mouseleave',()=>c.style.transform='');
+});
+</script>
+</body>
+</html>
